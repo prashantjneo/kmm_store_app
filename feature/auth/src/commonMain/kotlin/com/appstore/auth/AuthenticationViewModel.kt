@@ -4,13 +4,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.appstore.data.domain.model.login.LoginRequest
 import com.appstore.data.domain.model.login.LoginResponse
 import com.appstore.data.domain.repository.CustomerRepository
 import com.appstore.shared.utils.RequestState
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
 data class LoginUiState(
@@ -31,14 +29,7 @@ class AuthenticationViewModel(
     private val customerRepository: CustomerRepository
 ) : ViewModel() {
 
-    private val viewModelScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
-
     var uiState by mutableStateOf(LoginUiState())
-        private set
-
-    var loginRequestState by mutableStateOf<RequestState<LoginResponse>>(
-        RequestState.Idle
-    )
         private set
 
     fun onUsernameChange(value: String) {
@@ -52,17 +43,20 @@ class AuthenticationViewModel(
     fun login() {
 
         viewModelScope.launch {
-
-            loginRequestState = RequestState.Loading
-
+            uiState = uiState.copy(
+                requestState = RequestState.Loading
+            )
             val result = customerRepository.login(
                 LoginRequest(
                     uiState.username,
                     uiState.password
                 )
             )
-
-            loginRequestState = result
+            uiState = uiState.copy(
+                requestState = result
+            )
         }
     }
+
+
 }

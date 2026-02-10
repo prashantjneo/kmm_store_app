@@ -12,8 +12,6 @@ import com.appstore.auth.AuthenticationScreen
 fun SetNavGraph(startDestination: Screen = Screen.Auth) {
 
     val navController = rememberNavController()
-
-
     NavHost(
         navController = navController,
         startDestination = startDestination

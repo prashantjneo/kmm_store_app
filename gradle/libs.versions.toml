@@ -53,7 +53,7 @@ compose-uiToolingPreview = { module = "org.jetbrains.compose.ui:ui-tooling-previ
 splash-screen = { module = "androidx.core:core-splashscreen" , version.ref ="splash" }
 compose-navigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigation" }
 
-auth-kmp = { module = "io.github.mirzemehdi:kmpauth-google", version.ref = "auth" }
+#auth-kmp = { module = "io.github.mirzemehdi:kmpauth-google", version.ref = "auth" }
 auth-firebase-kmp = { module = "io.github.mirzemehdi:kmpauth-firebase", version.ref = "auth" }
 kmp-notifier = { module = "io.github.mirzemehdi:kmpnotifier", version.ref = "notifier" }
 

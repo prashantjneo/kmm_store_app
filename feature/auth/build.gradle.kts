@@ -36,7 +36,6 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtimeCompose)
 
             implementation(libs.messagebar.kmp)
-            implementation(libs.auth.kmp)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
 
