@@ -3,9 +3,9 @@ package com.nutrisport.shared
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.sp
-import kotlinproject.shared.generated.resources.Res
-import kotlinproject.shared.generated.resources.bebas_neue_regular
-import kotlinproject.shared.generated.resources.roboto_condensed_medium
+import kmm_product_listing.shared.generated.resources.Res
+import kmm_product_listing.shared.generated.resources.bebas_neue_regular
+import kmm_product_listing.shared.generated.resources.roboto_condensed_medium
 
 
 @Composable

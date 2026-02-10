@@ -1,4 +1,3 @@
-package com.nutrisport.shared.navigation
 
 import kotlinx.serialization.Serializable
 
@@ -23,8 +22,6 @@ sealed class Screen {
     @Serializable
     data object Profile : Screen()
 
-    @Serializable
-    data object AdminPanel : Screen()
 
 
     @Serializable
@@ -37,10 +34,6 @@ sealed class Screen {
         val id: String
     ) : Screen()
 
-    @Serializable
-    data class CategorySearch(
-        val category: String
-    ) : Screen()
 
 
     @Serializable
@@ -49,11 +42,6 @@ sealed class Screen {
     ) : Screen()
 
 
-    @Serializable
-    data class PaymentComplete(
-        val isSuccess: Boolean? = null,
-        val error: String? = null,
-        val token: String? = null
-    ) : Screen()
+
 
 }

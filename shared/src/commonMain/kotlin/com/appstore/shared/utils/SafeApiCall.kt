@@ -1,0 +1,29 @@
+package com.appstore.shared.utils
+
+import io.ktor.client.statement.HttpResponse
+import io.ktor.client.statement.bodyAsText
+import io.ktor.http.isSuccess
+
+suspend inline fun <T> safeApiCall(
+    crossinline apiCall: suspend () -> HttpResponse,
+    crossinline parser: suspend (HttpResponse) -> T
+): RequestState<T> {
+
+    return try {
+
+        val response = apiCall()
+
+        if (response.status.isSuccess()) {
+
+            RequestState.Success(parser(response))
+
+        } else {
+
+            RequestState.Error(response.bodyAsText())
+        }
+
+    } catch (e: Exception) {
+
+        RequestState.Error(e.message ?: "Unknown error")
+    }
+}
