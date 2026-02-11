@@ -11,37 +11,13 @@ sealed class Screen {
     data object HomeGraph : Screen()
 
     @Serializable
-    data object ProductOverview : Screen()
+    data object ProductList : Screen()
 
     @Serializable
-    data object Cart : Screen()
+    data class ProductDetail(val productId: Int) : Screen()
 
     @Serializable
-    data object Categories : Screen()
-
-    @Serializable
-    data object Profile : Screen()
-
-
-
-    @Serializable
-    data class ManageProduct(
-        val id: String? = null
-    ) : Screen()
-
-    @Serializable
-    data class Details(
-        val id: String
-    ) : Screen()
-
-
-
-    @Serializable
-    data class Checkout(
-        val totalAmount: String
-    ) : Screen()
-
-
+    data class AddEditProduct(val productId: Int?) : Screen()
 
 
 }

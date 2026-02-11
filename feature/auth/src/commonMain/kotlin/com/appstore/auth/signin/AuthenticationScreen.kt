@@ -1,4 +1,4 @@
-package com.appstore.auth
+package com.appstore.auth.signin
 
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
@@ -42,7 +42,10 @@ fun AuthenticationScreen(
 
             when (val result = uiState.requestState) {
                 is RequestState.Error -> {
-                    snackbarHostState.showSnackbar(result.message)
+                    navigateToHome()
+                    //snackbarHostState.showSnackbar(result.message)
+
+
                 }
 
                 is RequestState.Success -> {

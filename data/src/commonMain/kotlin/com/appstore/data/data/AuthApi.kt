@@ -1,6 +1,6 @@
 package com.appstore.data.data
 
-import com.appstore.data.domain.model.login.LoginRequest
+import com.appstore.data.domain.model.login.sigin.LoginRequest
 import com.appstore.shared.Constants
 import io.ktor.client.HttpClient
 import io.ktor.client.request.post

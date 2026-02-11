@@ -1,12 +1,12 @@
-package com.appstore.auth
+package com.appstore.auth.signin
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.appstore.data.domain.model.login.LoginRequest
-import com.appstore.data.domain.model.login.LoginResponse
+import com.appstore.data.domain.model.login.sigin.LoginRequest
+import com.appstore.data.domain.model.login.sigin.LoginResponse
 import com.appstore.data.domain.repository.CustomerRepository
 import com.appstore.shared.utils.RequestState
 import kotlinx.coroutines.launch

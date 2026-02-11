@@ -1,4 +1,4 @@
-package com.appstore.data.domain.model.login
+package com.appstore.data.domain.model.login.sigin
 
 import kotlinx.serialization.Serializable
 

@@ -1,8 +1,8 @@
 package com.appstore.data.domain
 
 import com.appstore.data.data.AuthApi
-import com.appstore.data.domain.model.login.LoginRequest
-import com.appstore.data.domain.model.login.LoginResponse
+import com.appstore.data.domain.model.login.sigin.LoginRequest
+import com.appstore.data.domain.model.login.sigin.LoginResponse
 import com.appstore.data.domain.repository.CustomerRepository
 import com.appstore.shared.utils.safeApiCall
 import io.ktor.client.call.body

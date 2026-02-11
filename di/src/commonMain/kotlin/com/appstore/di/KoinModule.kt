@@ -1,10 +1,14 @@
 package com.appstore.di
 
 
-import com.appstore.auth.AuthenticationViewModel
+import com.appstore.auth.product_list.ProductListViewModel
+import com.appstore.auth.signin.AuthenticationViewModel
 import com.appstore.data.data.AuthApi
+import com.appstore.data.data.ProductApi
 import com.appstore.data.domain.CustomerRepositoryImpl
+import com.appstore.data.domain.ProductRepositoryImpl
 import com.appstore.data.domain.repository.CustomerRepository
+import com.appstore.data.domain.repository.ProductRepository
 import com.appstore.data.remote.createHttpClient
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
@@ -15,8 +19,11 @@ val sharedModule = module {
 
     single { createHttpClient() }
     single { AuthApi(get()) }
+    single { ProductApi(get()) }
     single<CustomerRepository> { CustomerRepositoryImpl(get()) }
+    single<ProductRepository> { ProductRepositoryImpl(get()) }
     viewModelOf(::AuthenticationViewModel)
+    viewModelOf(::ProductListViewModel)
 
 }
 
