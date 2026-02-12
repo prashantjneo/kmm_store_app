@@ -17,7 +17,7 @@ sealed class Screen {
     data class ProductDetail(val productId: Int) : Screen()
 
     @Serializable
-    data class AddEditProduct(val productId: Int?) : Screen()
+    data class AddEditProduct(val product: Int?) : Screen()
 
 
 }

@@ -17,6 +17,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -38,6 +39,17 @@ fun ProductListScreen(
     val viewModel = koinViewModel<ProductListViewModel>()
 
     val uiState = viewModel.uiState
+
+    LaunchedEffect(Unit) {
+        // Optional guard to avoid refetch if already loaded
+        if (uiState.requestState is RequestState.Idle ||
+            uiState.requestState is RequestState.Error
+        ) {
+            viewModel.getProducts()
+        }
+    }
+
+
 
     Scaffold(
         topBar = {

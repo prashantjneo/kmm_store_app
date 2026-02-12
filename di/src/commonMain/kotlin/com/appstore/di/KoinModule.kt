@@ -1,6 +1,7 @@
 package com.appstore.di
 
 
+import com.appstore.auth.product_details.ProductDetailViewModel
 import com.appstore.auth.product_list.ProductListViewModel
 import com.appstore.auth.signin.AuthenticationViewModel
 import com.appstore.data.data.AuthApi
@@ -24,6 +25,7 @@ val sharedModule = module {
     single<ProductRepository> { ProductRepositoryImpl(get()) }
     viewModelOf(::AuthenticationViewModel)
     viewModelOf(::ProductListViewModel)
+    viewModelOf(::ProductDetailViewModel)
 
 }
 

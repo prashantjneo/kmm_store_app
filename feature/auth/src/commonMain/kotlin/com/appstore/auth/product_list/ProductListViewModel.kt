@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.appstore.data.domain.model.login.product_list.ProductResponse
 import com.appstore.data.domain.repository.ProductRepository
 import com.appstore.shared.utils.RequestState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 data class ProductUiModel(
@@ -32,9 +33,6 @@ class ProductListViewModel(
     var uiState by mutableStateOf(ProductListUiState())
         private set
 
-    init {
-        getProducts()
-    }
 
     fun getProducts() {
 
@@ -44,10 +42,18 @@ class ProductListViewModel(
                 requestState = RequestState.Loading
             )
 
-            val result = repository.getProducts()
+            val first = repository.getProducts()
+
+            val finalResult = if (first is RequestState.Error) {
+                delay(400)   // small retry delay
+                repository.getProducts()
+
+            } else {
+                first
+            }
 
             uiState = uiState.copy(
-                requestState = result
+                requestState = finalResult
             )
         }
     }

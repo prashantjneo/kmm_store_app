@@ -44,8 +44,6 @@ kotlin {
             implementation(libs.coil3.compose.core)
             implementation(libs.coil3.network.ktor)
 
-
-      
             implementation(project(path = ":shared"))
             implementation(project(path = ":data"))
 
