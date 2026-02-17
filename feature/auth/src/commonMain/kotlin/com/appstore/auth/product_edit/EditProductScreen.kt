@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.appstore.auth.product_details.ProductDetailViewModel
+import com.appstore.auth.product_list.ProductListViewModel
 import com.appstore.shared.utils.RequestState
 import com.nutrisport.shared.IconPrimary
 import com.nutrisport.shared.Resources
@@ -38,10 +39,9 @@ fun EditProductScreen(
     productId: Int,
     onBackClick: () -> Unit,
     onProductUpdated: () -> Unit,
+) {
 
-    ) {
-    val viewModel = koinViewModel<ProductDetailViewModel>()
-
+    val viewModel = koinViewModel<ProductListViewModel>()
 
     val detailState = viewModel.productDetailState
     val updateState = viewModel.updateProductState
@@ -50,19 +50,19 @@ fun EditProductScreen(
     var price by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     var category by remember { mutableStateOf("electronics") }
-    var image by remember {
-        mutableStateOf("https://i.pravatar.cc")
-    }
+    var image by remember { mutableStateOf("https://i.pravatar.cc") }
 
-
-    // Load product
+    // -----------------------------
+    // LOAD PRODUCT
+    // -----------------------------
     LaunchedEffect(productId) {
         viewModel.getProductDetail(productId)
     }
 
-    LaunchedEffect(detailState) {
+    var isPrefilled by remember { mutableStateOf(false) }
 
-        if (detailState is RequestState.Success) {
+    LaunchedEffect(detailState) {
+        if (!isPrefilled && detailState is RequestState.Success) {
 
             val product = detailState.data
 
@@ -74,8 +74,10 @@ fun EditProductScreen(
         }
     }
 
+    // -----------------------------
+    // UI
+    // -----------------------------
     Scaffold(
-
         topBar = {
             TopAppBar(
                 title = { Text("Edit Product") },
@@ -90,7 +92,6 @@ fun EditProductScreen(
                 }
             )
         }
-
     ) { padding ->
 
         Column(
@@ -134,11 +135,8 @@ fun EditProductScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
-
-
             Spacer(Modifier.height(12.dp))
 
-            // Static Image URL
             OutlinedTextField(
                 value = image,
                 onValueChange = { image = it },
@@ -177,9 +175,7 @@ fun EditProductScreen(
 
                 is RequestState.Success -> {
 
-                    LaunchedEffect(Unit) {
-                        onProductUpdated()
-                    }
+                    onProductUpdated()
                 }
 
                 is RequestState.Error -> {
