@@ -27,6 +27,7 @@ fun SetNavGraph(startDestination: Screen = Screen.Auth) {
                         popUpTo<Screen.Auth> { inclusive = true }
                     }
                 }
+
             )
         }
 
