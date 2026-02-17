@@ -25,7 +25,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.appstore.auth.product_details.ProductDetailViewModel
 import com.appstore.auth.product_list.ProductListViewModel
 import com.appstore.shared.utils.RequestState
 import com.nutrisport.shared.IconPrimary

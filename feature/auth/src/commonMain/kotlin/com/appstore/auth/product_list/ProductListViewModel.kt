@@ -13,7 +13,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-
 data class ProductUiModel(
     val id: Int,
     val title: String,
@@ -92,8 +91,6 @@ class ProductListViewModel(
         }
     }
 
-    private var shouldRefreshList = false
-
     fun updateProduct(
         productId: Int,
         title: String,
@@ -118,21 +115,6 @@ class ProductListViewModel(
 
             updateProductState = result
 
-            if (result is RequestState.Success) {
-                shouldRefreshList = true
-            }
         }
     }
-
-
-    fun refreshIfNeeded() {
-
-        if (shouldRefreshList) {
-            shouldRefreshList = false
-            print(" API Call from refresh")
-            getProducts()
-        }
-    }
-
-
 }

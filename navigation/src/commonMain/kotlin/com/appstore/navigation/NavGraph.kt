@@ -73,7 +73,6 @@ fun SetNavGraph(startDestination: Screen = Screen.Auth) {
                 onBackClick = { navController.navigateUp() },
 
                 onProductUpdated = {
-
                     navController.popBackStack(
                         Screen.ProductList,
                         false
