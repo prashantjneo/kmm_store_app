@@ -52,6 +52,12 @@ class ProductListViewModel(
 
 
     // -------------------------
+    // DELETE STATE
+    // -------------------------
+    var deleteState by mutableStateOf<RequestState<Unit>>(RequestState.Idle)
+        private set
+
+    // -------------------------
     // GET PRODUCT LIST
     // -------------------------
     fun getProducts() {
@@ -117,4 +123,33 @@ class ProductListViewModel(
 
         }
     }
+
+    fun deleteProduct(productId: Int) {
+
+        viewModelScope.launch {
+
+            deleteState = RequestState.Loading
+
+            val result = repository.deleteProduct(productId)
+
+            deleteState = result
+
+            if (result is RequestState.Success) {
+
+                val current = uiState.requestState
+
+                if (current is RequestState.Success) {
+
+                    val updatedList = current.data.filter {
+                        it.id != productId
+                    }
+
+                    uiState = uiState.copy(
+                        requestState = RequestState.Success(updatedList)
+                    )
+                }
+            }
+        }
+    }
+
 }

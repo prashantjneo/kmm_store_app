@@ -1,9 +1,9 @@
 package com.appstore.data.data
 
-import com.appstore.data.domain.model.login.product_list.ProductResponse
 import com.appstore.data.domain.model.product_update.UpdateProductRequest
 import com.appstore.shared.Constants
 import io.ktor.client.HttpClient
+import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.put
 import io.ktor.client.request.setBody
@@ -36,6 +36,9 @@ class ProductApi(
         }
     }
 
+    suspend fun deleteProduct(productId: Int): HttpResponse {
+        return httpClient.delete("${Constants.PRODUCTLIST}/$productId")
+    }
 
 
 }

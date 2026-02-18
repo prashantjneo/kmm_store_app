@@ -14,4 +14,7 @@ interface ProductRepository {
         request: UpdateProductRequest
     ): RequestState<ProductResponse>
 
+
+    suspend fun deleteProduct(productId: Int): RequestState<Unit>
+
 }

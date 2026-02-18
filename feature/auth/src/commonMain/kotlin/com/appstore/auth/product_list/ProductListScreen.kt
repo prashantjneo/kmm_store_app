@@ -31,9 +31,128 @@ import com.nutrisport.shared.Resources
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 
+
 @OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ProductListScreen(
+    onProductClick: (Int) -> Unit,
+    onAddProductClick: () -> Unit,
+    onDeleteClick: (Int) -> Unit,   // kept to not break architecture
+    onBackClick: () -> Unit
+) {
+    val viewModel = koinViewModel<ProductListViewModel>()
+    val uiState = viewModel.uiState
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    DisposableEffect(lifecycleOwner) {
+
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+
+                // Only load first time
+                if (uiState.requestState is RequestState.Idle ||
+                    uiState.requestState is RequestState.Error
+                ) {
+                    println("API call initial load")
+                    viewModel.getProducts()
+                }
+            }
+        }
+
+        lifecycleOwner.lifecycle.addObserver(observer)
+
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = "Products",
+                        style = MaterialTheme.typography.headlineSmall
+                    )
+                },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) {
+                        Icon(
+                            painter = painterResource(Resources.Icon.BackArrow),
+                            contentDescription = "Back arrow icon",
+                            tint = IconPrimary
+                        )
+                    }
+                }
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = onAddProductClick) {
+                Icon(
+                    painter = painterResource(Resources.Icon.Book),
+                    contentDescription = "Add Product",
+                    tint = IconPrimary
+                )
+            }
+        }
+    ) { padding ->
+
+        Box(
+            modifier = Modifier
+                .padding(padding)
+                .fillMaxSize()
+        ) {
+
+            when (val state = uiState.requestState) {
+
+                is RequestState.Loading -> {
+                    CircularProgressIndicator(
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
+
+                is RequestState.Success -> {
+
+                    val products = state.data.map { it.toUiModel() }
+
+                    LazyColumn(
+                        contentPadding = PaddingValues(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        items(
+                            items = products,
+                            key = { it.id }
+                        ) { product ->
+
+                            ProductItem(
+                                product = product,
+                                onClick = { onProductClick(product.id) },
+
+                                // 🔥 IMPORTANT CHANGE HERE
+                                onDeleteClick = {
+                                    viewModel.deleteProduct(product.id)
+                                }
+                            )
+                        }
+                    }
+                }
+
+                is RequestState.Error -> {
+                    Text(
+                        state.message,
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
+
+                else -> {}
+            }
+        }
+    }
+}
 
 
+/*
 @Composable
 fun ProductListScreen(
     onProductClick: (Int) -> Unit,
@@ -44,6 +163,7 @@ fun ProductListScreen(
     val viewModel = koinViewModel<ProductListViewModel>()
 
     val uiState = viewModel.uiState
+
 
     val lifecycleOwner = LocalLifecycleOwner.current
 
@@ -152,4 +272,5 @@ fun ProductListScreen(
     }
 }
 
+*/
 
