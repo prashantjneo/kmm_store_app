@@ -1,4 +1,5 @@
-package com.appstore.auth.product_edit
+package com.appstore.auth.product_add
+
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -37,55 +38,29 @@ import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditProductScreen(
+fun AddProductScreen(
     viewModel: ProductListViewModel,
-    productId: Int,
+
     onBackClick: () -> Unit,
-    onProductUpdated: () -> Unit,
+    onProductAdded: () -> Unit
 ) {
 
-
-    val detailState = viewModel.productDetailState
-    val updateState = viewModel.updateProductState
+    //val viewModel = koinViewModel<ProductListViewModel>()
+    val addState = viewModel.addState
 
     var title by remember { mutableStateOf("") }
     var price by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
-    var category by remember { mutableStateOf("electronics") }
+    var category by remember { mutableStateOf("") }
     var image by remember { mutableStateOf("https://i.pravatar.cc") }
 
-    // -----------------------------
-    // LOAD PRODUCT
-    // -----------------------------
-    LaunchedEffect(productId) {
-        viewModel.getProductDetail(productId)
-    }
-
-    var isPrefilled by remember { mutableStateOf(false) }
-
-    LaunchedEffect(detailState) {
-        if (!isPrefilled && detailState is RequestState.Success) {
-
-            val product = detailState.data
-
-            title = product.title
-            price = product.price.toString()
-            description = product.description
-            category = product.category
-            image = product.image
-        }
-    }
-
-    // -----------------------------
-    // UI
-    // -----------------------------
     Scaffold(
         containerColor = Surface,
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = "Edit Product",
+                        text = "Add Product",
                         fontFamily = BebasNeueFont(),
                         fontSize = FontSize.LARGE,
                         color = TextPrimary
@@ -114,48 +89,43 @@ fun EditProductScreen(
         ) {
 
             OutlinedTextField(
-                value = title,
-                onValueChange = { title = it },
+                title,
+                { title = it },
                 label = { Text("Title") },
                 modifier = Modifier.fillMaxWidth()
             )
-
             Spacer(Modifier.height(12.dp))
 
             OutlinedTextField(
-                value = price,
-                onValueChange = { price = it },
+                price,
+                { price = it },
                 label = { Text("Price") },
                 modifier = Modifier.fillMaxWidth()
             )
-
             Spacer(Modifier.height(12.dp))
 
             OutlinedTextField(
-                value = description,
-                onValueChange = { description = it },
+                description,
+                { description = it },
                 label = { Text("Description") },
                 modifier = Modifier.fillMaxWidth()
             )
-
             Spacer(Modifier.height(12.dp))
 
             OutlinedTextField(
-                value = category,
-                onValueChange = { category = it },
+                category,
+                { category = it },
                 label = { Text("Category") },
                 modifier = Modifier.fillMaxWidth()
             )
-
             Spacer(Modifier.height(12.dp))
 
             OutlinedTextField(
-                value = image,
-                onValueChange = { image = it },
+                image,
+                { image = it },
                 label = { Text("Image URL") },
                 modifier = Modifier.fillMaxWidth()
             )
-
             Spacer(Modifier.height(24.dp))
 
             Button(
@@ -164,8 +134,7 @@ fun EditProductScreen(
 
                     if (title.isBlank() || price.isBlank()) return@Button
 
-                    viewModel.updateProduct(
-                        productId,
+                    viewModel.addProduct(
                         title,
                         price,
                         description,
@@ -174,28 +143,29 @@ fun EditProductScreen(
                     )
                 }
             ) {
-                Text("Update Product")
+                Text("Add Product")
             }
 
             Spacer(Modifier.height(16.dp))
 
-            when (updateState) {
+            when (addState) {
 
                 is RequestState.Loading -> {
                     CircularProgressIndicator()
                 }
 
                 is RequestState.Success -> {
+                    LaunchedEffect(addState) {
 
-                    LaunchedEffect(Unit) {
+                        // give Compose one frame to recompose list
+                        kotlinx.coroutines.delay(150)
 
-                        viewModel.resetUpdateState()   // ✅ CLEAR OLD STATE
-                        onProductUpdated()
+                        onProductAdded()
                     }
                 }
 
                 is RequestState.Error -> {
-                    Text(updateState.message, color = Color.Red)
+                    Text(addState.message, color = Color.Red)
                 }
 
                 else -> Unit

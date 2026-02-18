@@ -48,14 +48,20 @@ class AuthenticationViewModel(
             )
             val result = customerRepository.login(
                 LoginRequest(
-                    uiState.username,
-                    uiState.password
+                    //  uiState.username,
+                    //uiState.password
+                    "mor_2314",
+                    "83r5^_"
                 )
             )
             uiState = uiState.copy(
                 requestState = result
             )
         }
+    }
+
+    fun signUp() {
+
     }
 
 

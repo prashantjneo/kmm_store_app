@@ -1,6 +1,7 @@
 package com.appstore.data.domain.repository
 
 import com.appstore.data.domain.model.login.product_list.ProductResponse
+import com.appstore.data.domain.model.product_add.AddProductRequest
 import com.appstore.data.domain.model.product_update.UpdateProductRequest
 import com.appstore.shared.utils.RequestState
 
@@ -10,11 +11,13 @@ interface ProductRepository {
     suspend fun getProductById(productId: Int): RequestState<ProductResponse>
 
     suspend fun updateProduct(
-        productId: Int,
-        request: UpdateProductRequest
+        productId: Int, request: UpdateProductRequest
     ): RequestState<ProductResponse>
 
 
     suspend fun deleteProduct(productId: Int): RequestState<Unit>
+    suspend fun addProduct(
+        request: AddProductRequest
+    ): RequestState<ProductResponse>
 
 }

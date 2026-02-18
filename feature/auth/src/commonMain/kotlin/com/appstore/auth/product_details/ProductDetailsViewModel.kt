@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.appstore.data.domain.model.login.product_list.ProductResponse
-import com.appstore.data.domain.model.product_update.UpdateProductRequest
 import com.appstore.data.domain.repository.ProductRepository
 import com.appstore.shared.utils.RequestState
 import kotlinx.coroutines.delay
@@ -21,16 +20,6 @@ class ProductDetailViewModel(
 ) : ViewModel() {
 
     var uiState by mutableStateOf(ProductDetailUiState())
-        private set
-
-    var productDetailState by mutableStateOf<RequestState<ProductResponse>>(
-        RequestState.Idle
-    )
-        private set
-
-    var updateProductState by mutableStateOf<RequestState<ProductResponse>>(
-        RequestState.Idle
-    )
         private set
 
 
@@ -57,32 +46,5 @@ class ProductDetailViewModel(
         }
     }
 
-
-    fun updateProduct(
-        productId: Int,
-        title: String,
-        price: String,
-        description: String,
-        category: String,
-        image: String
-    ) {
-
-        val request = UpdateProductRequest(
-            title = title,
-            price = price.toDoubleOrNull(),
-            description = description,
-            category =category,
-            image =image
-
-        )
-
-        viewModelScope.launch {
-
-            updateProductState = RequestState.Loading
-
-            updateProductState =
-                repository.updateProduct(productId, request)
-        }
-    }
 
 }

@@ -2,14 +2,17 @@ package com.appstore.auth.product_details
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -17,17 +20,22 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import com.appstore.data.domain.model.login.product_list.ProductResponse
 import com.appstore.shared.utils.RequestState
+import com.nutrisport.shared.BebasNeueFont
+import com.nutrisport.shared.FontSize
 import com.nutrisport.shared.IconPrimary
 import com.nutrisport.shared.Resources
+import com.nutrisport.shared.RobotoCondensedFont
+import com.nutrisport.shared.Surface
+import com.nutrisport.shared.TextPrimary
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -47,9 +55,18 @@ fun ProductDetailScreen(
     }
 
     Scaffold(
+        containerColor = Surface,
         topBar = {
-            TopAppBar(
-                title = { Text("Product Detail") },
+            CenterAlignedTopAppBar(
+                title = {
+                    Text(
+                        text = "Products Detail",
+                        fontFamily = BebasNeueFont(),
+                        fontSize = FontSize.LARGE,
+                        color = TextPrimary
+                    )
+
+                },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(
@@ -58,8 +75,9 @@ fun ProductDetailScreen(
                             tint = IconPrimary
                         )
                     }
-                }
-            )
+                },
+
+                )
         }
     ) { padding ->
 
@@ -99,24 +117,45 @@ fun ProductDetailScreen(
 
                         Text(
                             product.title,
-                            style = MaterialTheme.typography.titleLarge
+
+                            fontSize = FontSize.MEDIUM,
+                            color = TextPrimary,
+                            fontFamily = RobotoCondensedFont(),
+                            fontWeight = FontWeight.Medium,
+
+                            overflow = TextOverflow.Ellipsis
                         )
 
                         Spacer(Modifier.height(8.dp))
 
                         Text(
                             "₹ ${product.price}",
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.primary
+                            color = MaterialTheme.colorScheme.primary,
+                            fontSize = FontSize.MEDIUM,
+                            fontFamily = RobotoCondensedFont(),
+                            fontWeight = FontWeight.Medium,
+
+                            overflow = TextOverflow.Ellipsis
                         )
 
                         Spacer(Modifier.height(12.dp))
 
-                        Text(product.description)
+                        Text(
+                            product.description,
+                            fontSize = FontSize.MEDIUM,
+                            color = TextPrimary,
+                            fontFamily = RobotoCondensedFont(),
+                            fontWeight = FontWeight.Medium,
+
+                            overflow = TextOverflow.Ellipsis
+                        )
 
                         Spacer(Modifier.height(25.dp))
 
                         Button(
+                            shape = RoundedCornerShape(size = 6.dp),
+
+                            contentPadding = PaddingValues(all = 20.dp),
                             onClick = {
                                 onProductEdit(product.id)
                             }

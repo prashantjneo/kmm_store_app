@@ -6,20 +6,29 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.appstore.auth.product_add.AddProductScreen
 import com.appstore.auth.product_details.ProductDetailScreen
 import com.appstore.auth.product_edit.EditProductScreen
 import com.appstore.auth.product_list.ProductListScreen
+import com.appstore.auth.product_list.ProductListViewModel
 import com.appstore.auth.signin.AuthenticationScreen
-
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun SetNavGraph(startDestination: Screen = Screen.Auth) {
 
     val navController = rememberNavController()
+
+    val listViewModel = koinViewModel<ProductListViewModel>()
+
     NavHost(
         navController = navController,
         startDestination = startDestination
     ) {
+
+        // -----------------------------
+        // AUTH
+        // -----------------------------
         composable<Screen.Auth> {
             AuthenticationScreen(
                 navigateToHome = {
@@ -27,27 +36,28 @@ fun SetNavGraph(startDestination: Screen = Screen.Auth) {
                         popUpTo<Screen.Auth> { inclusive = true }
                     }
                 }
-
             )
         }
 
+        // -----------------------------
+        // PRODUCT LIST
+        // -----------------------------
         composable<Screen.ProductList> {
             ProductListScreen(
+                viewModel = listViewModel,
                 onProductClick = { productId ->
                     navController.navigate(Screen.ProductDetail(productId))
                 },
                 onAddProductClick = {
-                    navController.navigate(Screen.AddEditProduct(null))
+                    navController.navigate(Screen.AddProduct)
                 },
-                onDeleteClick = { productId ->
-                    navController.navigate(Screen.ProductDetail(productId))
-                },
-                onBackClick = {
-                    navController.navigateUp()
-                }
+                onBackClick = { navController.navigateUp() }
             )
         }
 
+        // -----------------------------
+        // PRODUCT DETAIL
+        // -----------------------------
         composable<Screen.ProductDetail> { backStack ->
 
             val route = backStack.toRoute<Screen.ProductDetail>()
@@ -57,22 +67,23 @@ fun SetNavGraph(startDestination: Screen = Screen.Auth) {
                 productId = productId,
                 onBackClick = { navController.navigateUp() },
                 onProductEdit = { productId ->
-                    navController.navigate(
-                        Screen.AddEditProduct(productId)
-                    )
-
+                    navController.navigate(Screen.AddEditProduct(productId))
                 }
             )
         }
 
+        // -----------------------------
+        // EDIT PRODUCT
+        // -----------------------------
         composable<Screen.AddEditProduct> { backStack ->
 
             val route = backStack.toRoute<Screen.AddEditProduct>()
             val productId = route.product ?: 0
+
             EditProductScreen(
                 productId = productId,
+                viewModel = listViewModel,
                 onBackClick = { navController.navigateUp() },
-
                 onProductUpdated = {
                     navController.popBackStack(
                         Screen.ProductList,
@@ -81,7 +92,17 @@ fun SetNavGraph(startDestination: Screen = Screen.Auth) {
                 }
             )
         }
+
+        // -----------------------------
+        // ADD PRODUCT
+        // -----------------------------
+        composable<Screen.AddProduct> {
+
+            AddProductScreen(
+                viewModel = listViewModel,
+                onBackClick = { navController.navigateUp() },
+                onProductAdded = { navController.popBackStack() }
+            )
+        }
     }
-
-
 }

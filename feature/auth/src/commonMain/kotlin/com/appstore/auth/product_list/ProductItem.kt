@@ -21,10 +21,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.nutrisport.shared.FontSize
 import com.nutrisport.shared.IconPrimary
 import com.nutrisport.shared.Resources
+import com.nutrisport.shared.RobotoCondensedFont
+import com.nutrisport.shared.TextPrimary
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -67,7 +72,13 @@ fun ProductItem(
                 Text(
                     text = product.title,
                     style = MaterialTheme.typography.titleMedium,
-                    maxLines = 2
+                    maxLines = 2,
+                    fontSize = FontSize.MEDIUM,
+                    color = TextPrimary,
+                    fontFamily = RobotoCondensedFont(),
+                    fontWeight = FontWeight.Medium,
+
+                    overflow = TextOverflow.Ellipsis
                 )
 
                 Spacer(modifier = Modifier.height(6.dp))
@@ -75,7 +86,12 @@ fun ProductItem(
                 Text(
                     text = "₹ ${product.price}",
                     style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.primary
+                            fontSize = FontSize.SMALL,
+                    color = TextPrimary,
+                    fontFamily = RobotoCondensedFont(),
+                    fontWeight = FontWeight.Medium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
 

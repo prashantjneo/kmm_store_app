@@ -21,8 +21,7 @@ fun AuthenticationScreen(
     Scaffold(
         snackbarHost = {
             CenterSnackbarHost(hostState = snackbarHostState)
-        }
-    ) { padding ->
+        }) {
 
         val viewModel = koinViewModel<AuthenticationViewModel>()
         val uiState = viewModel.uiState
@@ -35,17 +34,14 @@ fun AuthenticationScreen(
             onUsernameChange = viewModel::onUsernameChange,
             onPasswordChange = viewModel::onPasswordChange,
             onLoginClick = viewModel::login,
-            onSignupClick = navigateToHome
+            onSignupClick = viewModel::signUp
         )
 
         LaunchedEffect(uiState.requestState) {
 
             when (val result = uiState.requestState) {
                 is RequestState.Error -> {
-                    navigateToHome()
-                    //snackbarHostState.showSnackbar(result.message)
-
-
+                    snackbarHostState.showSnackbar(result.message)
                 }
 
                 is RequestState.Success -> {

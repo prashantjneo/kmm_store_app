@@ -2,6 +2,7 @@ package com.appstore.data.domain
 
 import com.appstore.data.data.ProductApi
 import com.appstore.data.domain.model.login.product_list.ProductResponse
+import com.appstore.data.domain.model.product_add.AddProductRequest
 import com.appstore.data.domain.model.product_update.UpdateProductRequest
 import com.appstore.data.domain.repository.ProductRepository
 import com.appstore.shared.utils.safeApiCall
@@ -42,10 +43,16 @@ class ProductRepositoryImpl(private val api: ProductApi) : ProductRepository {
         },
 
         parser = {
-            Unit   // FakeStore delete returns body but we don’t need it
+              // FakeStore delete returns body but we don’t need it
         }
     )
 
+    override suspend fun addProduct(
+        request: AddProductRequest
+    ) = safeApiCall(
+        apiCall = { api.addProduct(request) },
+        parser = { it.body<ProductResponse>() }
+    )
 
 
 }

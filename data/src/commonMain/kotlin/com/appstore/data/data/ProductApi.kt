@@ -1,10 +1,12 @@
 package com.appstore.data.data
 
+import com.appstore.data.domain.model.product_add.AddProductRequest
 import com.appstore.data.domain.model.product_update.UpdateProductRequest
 import com.appstore.shared.Constants
 import io.ktor.client.HttpClient
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
+import io.ktor.client.request.post
 import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
@@ -40,5 +42,14 @@ class ProductApi(
         return httpClient.delete("${Constants.PRODUCTLIST}/$productId")
     }
 
+
+    suspend fun addProduct(
+        request: AddProductRequest
+    ): HttpResponse =
+        httpClient.post(Constants.PRODUCTLIST) {
+            contentType(ContentType.Application.Json)
+
+            setBody(request)
+        }
 
 }
