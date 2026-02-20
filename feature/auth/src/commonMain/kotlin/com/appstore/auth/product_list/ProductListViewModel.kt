@@ -225,13 +225,12 @@ class ProductListViewModel(
 
             if (result is RequestState.Success) {
 
-                // 🔥 ALWAYS build from current cache, not uiState
                 val currentList = when (val state = uiState.requestState) {
                     is RequestState.Success -> state.data.toMutableList()
                     else -> mutableListOf()
                 }
 
-                // 🔥 guaranteed unique id
+                //  guaranteed unique id
                 val newId = (currentList.maxOfOrNull { it.id } ?: 0) + 1
 
                 val newItem = result.data.copy(id = newId)
@@ -240,7 +239,6 @@ class ProductListViewModel(
 
                 currentList.add(0, newItem)
 
-                // 🔥 force new state emission
                 uiState = ProductListUiState(
                     requestState = RequestState.Success(currentList.toList())
                 )
@@ -253,6 +251,8 @@ class ProductListViewModel(
     fun resetUpdateState() {
         updateProductState = RequestState.Idle
     }
-
+    fun resetAddState() {
+        addState = RequestState.Idle
+    }
 }
 
