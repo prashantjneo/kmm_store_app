@@ -37,11 +37,9 @@ class ProductRepositoryImpl(private val api: ProductApi) : ProductRepository {
     override suspend fun deleteProduct(
         productId: Int
     ) = safeApiCall(
-
         apiCall = {
             api.deleteProduct(productId)
         },
-
         parser = {
               // FakeStore delete returns body but we don’t need it
         }
