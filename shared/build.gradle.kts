@@ -29,6 +29,7 @@ kotlin {
         commonMain.dependencies {
 
             implementation(compose.material3)
+
             implementation(compose.components.resources)
             implementation(libs.kotlinx.serialization)
             implementation(libs.coil3.network.ktor)
