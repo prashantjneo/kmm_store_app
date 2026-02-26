@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.sqldelight.plugin)
 }
 
 kotlin {
@@ -19,30 +20,25 @@ kotlin {
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "auth"
+            baseName = "database"
             isStatic = true
         }
     }
 
     sourceSets {
-        commonMain.dependencies {
 
-            implementation(compose.material3)
-            implementation(compose.components.resources)
-            implementation(libs.androidx.lifecycle.viewmodelCompose)
-            implementation(libs.androidx.lifecycle.runtimeCompose)
+        androidMain.dependencies {
+            implementation(libs.sqldelight.android)
+        }
+        iosMain.dependencies {
+            implementation(libs.sqldelight.ios)
+        }
+        commonMain.dependencies {
 
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
-
-            implementation(libs.coil3)
-            implementation(libs.coil3.compose)
-            implementation(libs.coil3.compose.core)
-            implementation(libs.coil3.network.ktor)
-
-            implementation(project(path = ":shared"))
-            implementation(project(path = ":data"))
-
+            implementation(libs.sqldelight.runtime)
+            implementation(libs.sqldelight.coroutine)
 
 
         }
@@ -53,7 +49,7 @@ kotlin {
 }
 
 android {
-    namespace = "org.appstore.auth"
+    namespace = "org.neosoft.project.database"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
@@ -65,6 +61,14 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+    }
+}
+
+sqldelight {
+    databases {
+        create("AppDatabase") {
+            packageName.set("com.appstore.database")
+        }
     }
 }
 

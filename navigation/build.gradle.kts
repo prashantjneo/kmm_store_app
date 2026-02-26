@@ -5,7 +5,6 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.serialization)
 }
 
 kotlin {
@@ -31,7 +30,6 @@ kotlin {
             implementation(project(path = ":feature:auth"))
             implementation(project(path = ":shared"))
 
-            implementation(libs.kotlinx.serialization)
             implementation(libs.compose.navigation)
 
             implementation(libs.koin.core)

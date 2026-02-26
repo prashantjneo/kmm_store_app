@@ -27,25 +27,15 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
-            implementation(compose.preview)
-            implementation(libs.androidx.lifecycle.viewmodelCompose)
-            implementation(libs.androidx.lifecycle.runtimeCompose)
 
+            implementation(compose.material3)
+            implementation(compose.components.resources)
             implementation(libs.kotlinx.serialization)
 
             implementation(libs.coil3)
             implementation(libs.coil3.compose)
             implementation(libs.coil3.compose.core)
             implementation(libs.coil3.network.ktor)
-
-            implementation(libs.koin.compose)
-            implementation(libs.koin.compose.viewmodel)
-
 
         }
         commonTest.dependencies {
