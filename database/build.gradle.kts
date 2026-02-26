@@ -45,7 +45,6 @@ kotlin {
             implementation(libs.sqldelight.runtime)
             implementation(libs.sqldelight.coroutine)
 
-
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

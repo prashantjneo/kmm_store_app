@@ -28,9 +28,9 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
 
-            implementation(compose.material3)
+            implementation(libs.compose.material3)
+            implementation(libs.compose.components.resources)
 
-            implementation(compose.components.resources)
             implementation(libs.kotlinx.serialization)
             implementation(libs.coil3.network.ktor)
 

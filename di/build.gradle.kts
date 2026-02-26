@@ -32,12 +32,11 @@ kotlin {
 
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
+            implementation(libs.ktor.client.core)
             implementation(project(path = ":feature:auth"))
             implementation(project(path = ":data"))
             implementation(project(":shared"))
             implementation(project(":database"))
-            implementation(libs.ktor.client.core)
-
 
         }
         commonTest.dependencies {

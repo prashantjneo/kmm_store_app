@@ -41,12 +41,13 @@ kotlin {
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.serialization)
+            implementation(libs.sqldelight.runtime)
+            implementation(libs.sqldelight.coroutine)
 
             implementation(project(path = ":shared"))
             implementation(project(path = ":database"))
 
-            implementation(libs.sqldelight.runtime)
-            implementation(libs.sqldelight.coroutine)
+
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
