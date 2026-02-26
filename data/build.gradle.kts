@@ -27,6 +27,7 @@ kotlin {
 
     sourceSets {
 
+
         androidMain.dependencies {
             implementation(libs.ktor.android.client)
         }
@@ -34,18 +35,6 @@ kotlin {
             implementation(libs.ktor.darwin.client)
         }
         commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
-            implementation(compose.preview)
-            implementation(libs.androidx.lifecycle.viewmodelCompose)
-            implementation(libs.androidx.lifecycle.runtimeCompose)
-
-
-            implementation(libs.koin.compose)
-            implementation(libs.koin.compose.viewmodel)
 
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.serialization)
@@ -54,6 +43,10 @@ kotlin {
             implementation(libs.kotlinx.serialization)
 
             implementation(project(path = ":shared"))
+            implementation(project(path = ":database"))
+
+            implementation(libs.sqldelight.runtime)
+            implementation(libs.sqldelight.coroutine)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -67,7 +60,7 @@ android {
 
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.targetSdk.get().toInt()
+        lint.targetSdk = libs.versions.android.targetSdk.get().toInt()
 
     }
 

@@ -34,7 +34,6 @@ fun CustomTextField(
     placeholder: String? = null,
     enabled: Boolean = true,
     error: Boolean = false,
-    singleLine: Boolean = true,
     expanded: Boolean = false,
     visualTransformation: VisualTransformation? = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions(

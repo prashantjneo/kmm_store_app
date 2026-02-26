@@ -1,0 +1,25 @@
+CREATE TABLE product(
+    id INTEGER NOT NULL PRIMARY KEY,
+    title TEXT NOT NULL,
+    price REAL NOT NULL,
+    description TEXT,
+    category TEXT,
+    image TEXT
+);
+
+selectAll:
+SELECT * FROM product;
+
+selectById:
+SELECT * FROM product WHERE id = ?;
+
+insertProduct:
+INSERT OR REPLACE INTO product(
+    id, title, price, description, category, image
+) VALUES (?, ?, ?, ?, ?, ?);
+
+deleteAll:
+DELETE FROM product;
+
+deleteById:
+DELETE FROM product WHERE id = ?;

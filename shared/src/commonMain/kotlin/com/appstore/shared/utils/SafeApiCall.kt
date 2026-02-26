@@ -11,29 +11,24 @@ suspend inline fun <T> safeApiCall(
 ): RequestState<T> {
 
     return try {
-
+90
         val response = apiCall()
         if (response.status.isSuccess()) {
 
             val parsed = parser(response)
-
             AppLogger.d("API_DEBUG", "Parsed → $parsed")
-
             RequestState.Success(parsed)
 
         } else {
 
             val errorBody = response.bodyAsText()
-
-            AppLogger.e("API_DEBUG", "Error Body → $errorBody")
-
+            AppLogger.e("API_DEBUG", "Error 0Body → $errorBody")
             RequestState.Error(errorBody)
         }
 
     } catch (e: Exception) {
 
         AppLogger.e("API_DEBUG", e.message ?: "Unknown Error")
-
         RequestState.Error(e.message ?: "Unknown error")
     }
 }

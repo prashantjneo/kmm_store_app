@@ -28,6 +28,7 @@ dependencyResolutionManagement {
     }
 }
 include(":data")
+include(":database")
 include(":di")
 include(":feature:auth")
 include(":navigation")

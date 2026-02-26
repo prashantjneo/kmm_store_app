@@ -27,21 +27,8 @@ kotlin {
 
     sourceSets {
 
-        androidMain.dependencies {
-            implementation(libs.ktor.android.client)
-        }
-        iosMain.dependencies {
-            implementation(libs.ktor.darwin.client)
-        }
+
         commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
-            implementation(compose.preview)
-            implementation(libs.androidx.lifecycle.viewmodelCompose)
-            implementation(libs.androidx.lifecycle.runtimeCompose)
 
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
@@ -49,6 +36,7 @@ kotlin {
             implementation(project(path = ":feature:auth"))
             implementation(project(path = ":data"))
             implementation(project(":shared"))
+            implementation(project(":database"))
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.serialization)
             implementation(libs.ktor.client.content.negotiation)
@@ -67,7 +55,7 @@ android {
 
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.targetSdk.get().toInt()
+        lint.targetSdk = libs.versions.android.targetSdk.get().toInt()
 
     }
 

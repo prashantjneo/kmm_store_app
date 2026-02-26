@@ -88,7 +88,7 @@ fun LoginScreen(
                         onValueChange = onUsernameChange,
                         placeholder = "Username",
                         modifier = Modifier.fillMaxWidth(),
-                        singleLine = true
+
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -98,7 +98,6 @@ fun LoginScreen(
                         onValueChange = onPasswordChange,
                         placeholder = "Password",   // ✅ fixed bug
                         modifier = Modifier.fillMaxWidth(),
-                        singleLine = true,
                         visualTransformation = PasswordVisualTransformation()
                     )
 

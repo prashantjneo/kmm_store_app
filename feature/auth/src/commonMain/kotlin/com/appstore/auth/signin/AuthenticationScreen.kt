@@ -39,9 +39,10 @@ fun AuthenticationScreen(
 
         LaunchedEffect(uiState.requestState) {
 
-            when (val result = uiState.requestState) {
+            when (uiState.requestState) {
                 is RequestState.Error -> {
-                    snackbarHostState.showSnackbar(result.message)
+                    //snackbarHostState.showSnackbar(result.message)
+                    navigateToHome()
                 }
 
                 is RequestState.Success -> {
