@@ -42,7 +42,6 @@ kotlin {
         commonMain.dependencies {
 
             implementation(libs.koin.compose)
-            implementation(libs.koin.compose.viewmodel)
             implementation(libs.sqldelight.runtime)
             implementation(libs.sqldelight.coroutine)
 

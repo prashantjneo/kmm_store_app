@@ -32,14 +32,11 @@ kotlin {
 
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
-            implementation(libs.koin.compose.viewmodel)
             implementation(project(path = ":feature:auth"))
             implementation(project(path = ":data"))
             implementation(project(":shared"))
             implementation(project(":database"))
             implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.serialization)
-            implementation(libs.ktor.client.content.negotiation)
 
 
         }
