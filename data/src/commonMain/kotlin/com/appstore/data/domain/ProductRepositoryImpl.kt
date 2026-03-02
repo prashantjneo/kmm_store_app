@@ -6,6 +6,7 @@ import com.appstore.data.domain.model.login.product_list.ProductResponse
 import com.appstore.data.domain.model.product_add.AddProductRequest
 import com.appstore.data.domain.model.product_update.UpdateProductRequest
 import com.appstore.data.domain.repository.ProductRepository
+import com.appstore.database.Product
 import com.appstore.shared.utils.RequestState
 import com.appstore.shared.utils.safeApiCall
 import io.ktor.client.call.body
@@ -81,12 +82,73 @@ class ProductRepositoryImpl(
         }
     }
 
-    override suspend fun getProductById(productId: Int) = safeApiCall(
+   /* override suspend fun getProductById(productId: Int) = safeApiCall(
         apiCall = { api.getProductById(productId) },
         parser = { it.body<ProductResponse>() }
     )
+*/
 
-    override suspend fun updateProduct(
+    override suspend fun getProductById(
+        productId: Int
+    ): RequestState<ProductResponse> {
+
+        try {
+
+            // 1️⃣ Try local DB first
+            val local = local.getProductById(productId.toLong())
+
+            if (local != null) {
+                println("✅ Loaded from local DB")
+
+                return RequestState.Success(
+                    ProductResponse(
+                        id = local.id.toInt(),
+                        title = local.title,
+                        price = local.price,
+                        description = local.description?:"",
+                        category = local.category?:"",
+                        image = local.image?:""
+                    )
+                )
+            }
+
+            println("🌍 Not found locally, calling network")
+
+            // 2️⃣ Call network
+            val networkResult = safeApiCall(
+                apiCall = { api.getProductById(productId) },
+                parser = { it.body<ProductResponse>() }
+            )
+
+            if (networkResult is RequestState.Success) {
+
+                println("🌍 Network success, saving to DB")
+
+                val data = networkResult.data
+
+                this.local.insertOrReplace(
+                    Product(
+                        id = data.id.toLong(),
+                        title = data.title,
+                        price = data.price,
+                        description = data.description,
+                        category = data.category,
+                        image = data.image
+                    )
+                )
+            }
+
+            return networkResult
+
+        } catch (e: Exception) {
+
+            println("❌ Exception in getProductById: ${e.message}")
+            return RequestState.Error(e.message ?: "Unknown error")
+        }
+    }
+
+
+    /*override suspend fun updateProduct(
         productId: Int,
         request: UpdateProductRequest
     ) = safeApiCall(
@@ -98,7 +160,66 @@ class ProductRepositoryImpl(
         parser = {
             it.body<ProductResponse>()
         }
-    )
+    )*/
+
+    override suspend fun updateProduct(
+        productId: Int,
+        request: UpdateProductRequest
+    ): RequestState<ProductResponse> {
+
+        return try {
+
+            // 1️⃣ LOCAL UPDATE FIRST
+
+            local.updateProduct(
+                id = productId.toLong(),
+                title = request.title ?: "",
+                price = request.price ?: 0.0,
+                description = request.description ?: "",
+                category = request.category ?: "",
+                image = request.image ?: ""
+            )
+
+            println("✅ Local DB updated")
+
+            // 2️⃣ NETWORK CALL
+            val networkResult = safeApiCall(
+                apiCall = { api.updateProduct(productId, request) },
+                parser = { it.body<ProductResponse>() }
+            )
+
+            when (networkResult) {
+
+                is RequestState.Success -> {
+                    println("🌍 Network success")
+                    networkResult
+                }
+
+                is RequestState.Error -> {
+                    println("⚠️ Network failed, returning local success")
+
+                    // IMPORTANT:
+                    // return success so your ViewModel updates cachedProducts
+                    RequestState.Success(
+                        ProductResponse(
+                            id = productId,
+                            title = request.title ?: "",
+                            price = request.price ?: 0.0,
+                            description = request.description ?: "",
+                            category = request.category ?: "",
+                            image = request.image ?: ""
+                        )
+                    )
+                }
+
+                else -> networkResult
+            }
+
+        } catch (e: Exception) {
+            println("❌ Update exception: ${e.message}")
+            RequestState.Error(e.message ?: "Update failed")
+        }
+    }
 
     override suspend fun deleteProduct(
         productId: Int
@@ -130,7 +251,7 @@ class ProductRepositoryImpl(
 
         // 🔹 Generate local temporary ID
         val localId = kotlin.random.Random.nextInt(1000000, 9999999)
-        val localProduct = com.appstore.database.Product(
+        val localProduct = Product(
             id = localId.toLong(),
             title = request.title,
             price = request.price ?: 0.0,

@@ -10,6 +10,15 @@ CREATE TABLE product(
 selectAll:
 SELECT * FROM product;
 
+updateProduct:
+UPDATE product
+SET title = ?,
+    price = ?,
+    description = ?,
+    category = ?,
+    image = ?
+WHERE id = ?;
+
 selectById:
 SELECT * FROM product WHERE id = ?;
 

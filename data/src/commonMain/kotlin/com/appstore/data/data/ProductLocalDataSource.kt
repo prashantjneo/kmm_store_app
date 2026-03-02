@@ -18,10 +18,10 @@ class ProductLocalDataSource(
             .mapToList(Dispatchers.Default)
     }
 
-    fun getProductById(id: Long): Flow<List<Product>> {
-        return queries.selectById(id)
-            .asFlow()
-            .mapToList(Dispatchers.Default)
+    fun getProductById(id: Long): Product? {
+        return queries
+            .selectById(id)
+            .executeAsOneOrNull()
     }
 
     fun insertProducts(products: List<Product>) {
@@ -48,6 +48,35 @@ class ProductLocalDataSource(
     }
 
     fun insertProduct(product: Product) {
+        queries.insertProduct(
+            id = product.id,
+            title = product.title,
+            price = product.price,
+            description = product.description,
+            category = product.category,
+            image = product.image
+        )
+    }
+
+    suspend fun updateProduct(
+        id: Long,
+        title: String,
+        price: Double,
+        description: String,
+        category: String,
+        image: String
+    ) {
+        queries.updateProduct(
+            title,
+            price,
+            description,
+            category,
+            image,
+            id
+        )
+    }
+
+    suspend fun insertOrReplace(product: Product) {
         queries.insertProduct(
             id = product.id,
             title = product.title,
